@@ -1,0 +1,28 @@
+<Project>
+  <PropertyGroup>
+    <!--
+    The source generator project needs to target the netstandard2.0 TFM, otherwise it will not work.
+    (from https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview#get-started-with-source-generators)
+    -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+
+    <IsPackable>true</IsPackable>
+
+    <Company>5HP Digital</Company>
+
+    <Nullable>enable</Nullable>
+
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

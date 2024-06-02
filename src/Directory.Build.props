@@ -1,0 +1,14 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props"/>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+
+    <Company>5HP Digital</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests.Unit" />
+  </ItemGroup>
+
+</Project>

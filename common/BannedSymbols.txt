@@ -1,0 +1,7 @@
+# https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.BannedApiAnalyzers/BannedApiAnalyzers.Help.md
+P:System.DateTime.Now;Use ITimeProvider or TimeProvider.Current.Now instead
+P:System.DateTime.UtcNow;Use ITimeProvider or TimeProvider.Current.Now instead
+P:System.DateTimeOffset.Now;Use ITimeProvider or TimeProvider.Current.Now instead
+P:System.DateTimeOffset.UtcNow;Use ITimeProvider or TimeProvider.Current.Now instead
+P:System.DateTimeOffset.DateTime;Use ITimeProvider or TimeProvider.Current.Now instead
+P:System.DateTimeOffset.UtcDateTime;Use ITimeProvider or TimeProvider.Current.Now instead

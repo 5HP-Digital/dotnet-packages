@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Shay Nissel</Authors>
+    <VersionPrefix>1.0.0</VersionPrefix>
+
+    <RootNamespace>Digital5HP</RootNamespace>
+  </PropertyGroup>
+
+</Project>

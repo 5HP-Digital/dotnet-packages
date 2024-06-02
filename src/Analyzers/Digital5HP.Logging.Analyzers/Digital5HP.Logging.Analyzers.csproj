@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Shay Nissel</Authors>
+    <VersionPrefix>1.0.0</VersionPrefix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Digital5HP.Analyzers\Digital5HP.Analyzers.csproj" />
+  </ItemGroup>
+
+</Project>

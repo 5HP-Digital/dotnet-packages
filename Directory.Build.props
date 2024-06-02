@@ -1,0 +1,68 @@
+<Project>
+  <PropertyGroup>
+    <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'True'">True</ContinuousIntegrationBuild>
+
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <Deterministic>true</Deterministic>
+
+    <Features>strict</Features>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+
+    <ReportAnalyzer>true</ReportAnalyzer>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <!-- Ideally this is always enabled, but that tends to hurt developer productivity -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <!-- Visual Studio compiler displays the CS8032 warning for unknown reason. Removing it manually to declutter the Error List -->
+    <NoWarn>$(NoWarn),8032</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncFixer" Version="1.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.154">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)\src\Analyzers\Digital5HP.Analyzers\Digital5HP.Analyzers.csproj"
+                      PrivateAssets="all"
+                      ReferenceOutputAssembly="false"
+                      OutputItemType="Analyzer"/>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)\src\Analyzers\Digital5HP.Logging.Analyzers\Digital5HP.Logging.Analyzers.csproj"
+                      PrivateAssets="all"
+                      ReferenceOutputAssembly="false"
+                      OutputItemType="Analyzer"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\common\BannedSymbols.txt" Link="Properties/BannedSymbols.txt"/>
+
+    <Compile Include="$(MSBuildThisFileDirectory)\common\AssemblyInfo.cs"
+             Link="Properties/AssemblyInfo.common.cs"/>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,47 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage">
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(ProjectName.EndsWith('Unit'))">
+    <Compile Include="$(MSBuildThisFileDirectory)\GlobalUnitAssemblyInfo.cs">
+      <Link>Properties\GlobalUnitAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(ProjectName.EndsWith('Integration'))">
+    <Compile Include="$(MSBuildThisFileDirectory)\GlobalIntegrationAssemblyInfo.cs">
+      <Link>Properties\GlobalUnitAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <!-- Visual Studio compiler displays the CS8032 warning for unknown reason. Removing it manually to declutter the Error List -->
+    <NoWarn>$(NoWarn),8032</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0"/>
+    <PackageReference Include="xunit" Version="2.8.1"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

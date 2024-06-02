@@ -1,0 +1,24 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets"/>
+
+  <!-- Workaround for lack of ability to set version dependency on project references (see: https://github.com/NuGet/Home/issues/5556#issuecomment-1179526189 ) -->
+  <!--
+    Example:
+    <ProjectReference Include="..\MyOtherProject1\MyOtherProject1.csproj" PackageVersion="[1.1.0, 2.0.0)" />
+    <ProjectReference Include="..\MyOtherProject2\MyOtherProject.2csproj" ExactVersion="true" />
+  -->
+  <Target Name="UseExplicitPackageVersions" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_ProjectReferenceWithExplicitPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.PackageVersion)' != ''" />
+      <_ProjectReferenceWithExactPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.ExactVersion)' == 'true'" />
+      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExplicitPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
+        <ProjectVersion>@(_ProjectReferenceWithExplicitPackageVersion->'%(PackageVersion)')</ProjectVersion>
+      </_ProjectReferenceWithReassignedVersion>
+      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExactPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
+        <ProjectVersion>[@(_ProjectReferencesWithVersions->'%(ProjectVersion)')]</ProjectVersion>
+      </_ProjectReferenceWithReassignedVersion>
+      <_ProjectReferencesWithVersions Remove="@(_ProjectReferenceWithReassignedVersion)" />
+      <_ProjectReferencesWithVersions Include="@(_ProjectReferenceWithReassignedVersion)" />
+    </ItemGroup>
+  </Target>
+</Project>
