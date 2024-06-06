@@ -16,118 +16,112 @@ jobs:
       id: changes
       run: |
         git fetch origin main
+        git diff --name-only origin/main
         {
           echo "changed_files<<EOF"
           git diff --name-only origin/main
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
 
-    - name: Debug info
-      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework/')
-      env:
-        CHANGED_FILES: ${{steps.changes.outputs.changed_files}}
-      run: |
-        echo "$CHANGED_FILES"
-
-    # - name: Set version suffix
-    #   id: set_version_suffix
-    #   run: echo "VERSION_SUFFIX=preview-${{ github.run_number }}.${{ github.run_attempt }}" >> $GITHUB_ENV
+    - name: Set version suffix
+      id: set_version_suffix
+      run: echo "VERSION_SUFFIX=preview-${{ github.run_number }}.${{ github.run_attempt }}" >> $GITHUB_ENV
   
-    # - name: Setup .NET
-    #   uses: actions/setup-dotnet@v4
-    #   with:
-    #     dotnet-version: 8.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
 
-    # - name: Restore dependencies
-    #   run: dotnet restore ./Digital5HP.Packages.sln --configfile ./NuGet.config
+    - name: Restore dependencies
+      run: dotnet restore ./Digital5HP.Packages.sln --configfile ./NuGet.config
 
-    # - name: Build
-    #   run: dotnet build ./Digital5HP.Packages.sln --no-restore --configuration Release
+    - name: Build
+      run: dotnet build ./Digital5HP.Packages.sln --no-restore --configuration Release
 
-    # - name: Test
-    #   run: dotnet test ./Digital5HP.Packages.sln --no-build --verbosity normal --configuration Release --filter "(Category=Unit)|(TestCategory=Unit)"
+    - name: Test
+      run: dotnet test ./Digital5HP.Packages.sln --no-build --verbosity normal --configuration Release --filter "(Category=Unit)|(TestCategory=Unit)"
 
-    #   # Digital5HP.Analyzers
-    # - name: Pack Digital5HP.Analyzers
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Analyzers/Digital5HP.Analyzers/')
-    #   run: dotnet pack ./src/Analyzers/Digital5HP.Analyzers/Digital5HP.Analyzers.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Analyzers
+    - name: Pack Digital5HP.Analyzers
+      if: contains(steps.changes.outputs.changed_files, 'src/Analyzers/Digital5HP.Analyzers/')
+      run: dotnet pack ./src/Analyzers/Digital5HP.Analyzers/Digital5HP.Analyzers.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Logging.Analyzers
-    # - name: Pack Digital5HP.Logging.Analyzers
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Analyzers/Digital5HP.Logging.Analyzers/')
-    #   run: dotnet pack ./src/Analyzers/Digital5HP.Logging.Analyzers/Digital5HP.Logging.Analyzers.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Logging.Analyzers
+    - name: Pack Digital5HP.Logging.Analyzers
+      if: contains(steps.changes.outputs.changed_files, 'src/Analyzers/Digital5HP.Logging.Analyzers/')
+      run: dotnet pack ./src/Analyzers/Digital5HP.Logging.Analyzers/Digital5HP.Logging.Analyzers.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Core
-    # - name: Pack Digital5HP.Core
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Core/')
-    #   run: dotnet pack ./src/Digital5HP.Core/Digital5HP.Core.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Core
+    - name: Pack Digital5HP.Core
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Core/')
+      run: dotnet pack ./src/Digital5HP.Core/Digital5HP.Core.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Logging
-    # - name: Pack Digital5HP.Logging
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging/')
-    #   run: dotnet pack ./src/Digital5HP.Logging/Digital5HP.Logging.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Logging
+    - name: Pack Digital5HP.Logging
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging/')
+      run: dotnet pack ./src/Digital5HP.Logging/Digital5HP.Logging.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Logging.Serilog
-    # - name: Pack Digital5HP.Logging.Serilog
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging.Serilog/')
-    #   run: dotnet pack ./src/Digital5HP.Logging.Serilog/Digital5HP.Logging.Serilog.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Logging.Serilog
+    - name: Pack Digital5HP.Logging.Serilog
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging.Serilog/')
+      run: dotnet pack ./src/Digital5HP.Logging.Serilog/Digital5HP.Logging.Serilog.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Logging.Serilog.AspNetCore
-    # - name: Pack Digital5HP.Logging.Serilog.AspNetCore
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging.Serilog.AspNetCore/')
-    #   run: dotnet pack ./src/Digital5HP.Logging.Serilog.AspNetCore/Digital5HP.Logging.Serilog.AspNetCore.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Logging.Serilog.AspNetCore
+    - name: Pack Digital5HP.Logging.Serilog.AspNetCore
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Logging.Serilog.AspNetCore/')
+      run: dotnet pack ./src/Digital5HP.Logging.Serilog.AspNetCore/Digital5HP.Logging.Serilog.AspNetCore.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.HealthChecks
-    # - name: Pack Digital5HP.HealthChecks
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.HealthChecks/')
-    #   run: dotnet pack ./src/Digital5HP.HealthChecks/Digital5HP.HealthChecks.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.HealthChecks
+    - name: Pack Digital5HP.HealthChecks
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.HealthChecks/')
+      run: dotnet pack ./src/Digital5HP.HealthChecks/Digital5HP.HealthChecks.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.ObjectMapping
-    # - name: Pack Digital5HP.ObjectMapping
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.ObjectMapping/')
-    #   run: dotnet pack ./src/Digital5HP.ObjectMapping/Digital5HP.ObjectMapping.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.ObjectMapping
+    - name: Pack Digital5HP.ObjectMapping
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.ObjectMapping/')
+      run: dotnet pack ./src/Digital5HP.ObjectMapping/Digital5HP.ObjectMapping.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.ObjectMapping.Mapster
-    # - name: Pack Digital5HP.ObjectMapping.Mapster
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.ObjectMapping.Mapster/')
-    #   run: dotnet pack ./src/Digital5HP.ObjectMapping.Mapster/Digital5HP.ObjectMapping.Mapster.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.ObjectMapping.Mapster
+    - name: Pack Digital5HP.ObjectMapping.Mapster
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.ObjectMapping.Mapster/')
+      run: dotnet pack ./src/Digital5HP.ObjectMapping.Mapster/Digital5HP.ObjectMapping.Mapster.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.DataAccess
-    # - name: Pack Digital5HP.DataAccess
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess/')
-    #   run: dotnet pack ./src/Digital5HP.DataAccess/Digital5HP.DataAccess.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.DataAccess
+    - name: Pack Digital5HP.DataAccess
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess/')
+      run: dotnet pack ./src/Digital5HP.DataAccess/Digital5HP.DataAccess.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.DataAccess.EntityFramework
-    # - name: Pack Digital5HP.DataAccess.EntityFramework
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework/')
-    #   run: dotnet pack ./src/Digital5HP.DataAccess.EntityFramework/Digital5HP.DataAccess.EntityFramework.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.DataAccess.EntityFramework
+    - name: Pack Digital5HP.DataAccess.EntityFramework
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework/')
+      run: dotnet pack ./src/Digital5HP.DataAccess.EntityFramework/Digital5HP.DataAccess.EntityFramework.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.DataAccess.EntityFramework.PostgreSQL
-    # - name: Pack Digital5HP.DataAccess.EntityFramework.PostgreSQL
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework.PostgreSQL/')
-    #   run: dotnet pack ./src/Digital5HP.DataAccess.EntityFramework.PostgreSQL/Digital5HP.DataAccess.EntityFramework.PostgreSQL.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.DataAccess.EntityFramework.PostgreSQL
+    - name: Pack Digital5HP.DataAccess.EntityFramework.PostgreSQL
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework.PostgreSQL/')
+      run: dotnet pack ./src/Digital5HP.DataAccess.EntityFramework.PostgreSQL/Digital5HP.DataAccess.EntityFramework.PostgreSQL.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.AspNetCore.Swagger
-    # - name: Pack Digital5HP.AspNetCore.Swagger
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.AspNetCore.Swagger/')
-    #   run: dotnet pack ./src/Digital5HP.AspNetCore.Swagger/Digital5HP.AspNetCore.Swagger.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.AspNetCore.Swagger
+    - name: Pack Digital5HP.AspNetCore.Swagger
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.AspNetCore.Swagger/')
+      run: dotnet pack ./src/Digital5HP.AspNetCore.Swagger/Digital5HP.AspNetCore.Swagger.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.AspNetCore.Versioning
-    # - name: Pack Digital5HP.AspNetCore.Versioning
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.AspNetCore.Versioning/')
-    #   run: dotnet pack ./src/Digital5HP.AspNetCore.Versioning/Digital5HP.AspNetCore.Versioning.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.AspNetCore.Versioning
+    - name: Pack Digital5HP.AspNetCore.Versioning
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.AspNetCore.Versioning/')
+      run: dotnet pack ./src/Digital5HP.AspNetCore.Versioning/Digital5HP.AspNetCore.Versioning.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    #   # Digital5HP.Test
-    # - name: Pack Digital5HP.Test
-    #   if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Test/')
-    #   run: dotnet pack ./src/Digital5HP.Test/Digital5HP.Test.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+      # Digital5HP.Test
+    - name: Pack Digital5HP.Test
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Test/')
+      run: dotnet pack ./src/Digital5HP.Test/Digital5HP.Test.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
-    # - name: Publish NuGet packages
-    #   if: success()
-    #   run: |
-    #     if ls ./nuget-packages/*.nupkg 1> /dev/null 2>&1; then \
-    #       dotnet nuget push ./nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_ORG_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
-    #     else \
-    #       echo "No packages to publish."; \
-    #     fi 
+    - name: Publish NuGet packages
+      if: success()
+      run: |
+        if ls ./nuget-packages/*.nupkg 1> /dev/null 2>&1; then \
+          dotnet nuget push ./nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_ORG_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
+        else \
+          echo "No packages to publish."; \
+        fi 
 
