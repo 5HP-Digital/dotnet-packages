@@ -23,6 +23,7 @@ jobs:
         } >> "$GITHUB_OUTPUT"
 
     - name: Debug info
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.DataAccess.EntityFramework/')
       env:
         CHANGED_FILES: ${{steps.changes.outputs.changed_files}}
       run: |
