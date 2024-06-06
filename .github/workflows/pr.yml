@@ -16,6 +16,7 @@ jobs:
       id: changes
       run: |
         git fetch origin main
+        git diff --name-only origin/main
         git diff --name-only origin/main > changed_files.txt
 
     - name: Set version suffix
