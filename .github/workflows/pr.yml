@@ -28,7 +28,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore ./Digital5HP.Packages.sln --configFile ./NuGet.config
+      run: dotnet restore ./Digital5HP.Packages.sln --configfile ./NuGet.config
 
     - name: Build
       run: dotnet build ./Digital5HP.Packages.sln --no-restore --configuration Release
