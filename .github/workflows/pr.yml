@@ -112,8 +112,11 @@ jobs:
       run: dotnet pack ./src/Digital5HP.Test/Digital5HP.Test.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
     - name: Publish NuGet packages
-      if: success() && (ls ./nuget-packages/*.nupkg | wc -l) != 0 
+      if: success()
       run: |
-        dotnet nuget push ./nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_ORG_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
-
+        if ls ./nuget-packages/*.nupkg 1> /dev/null 2>&1; then \
+          dotnet nuget push ./nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_ORG_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
+        else \
+          echo "No packages to publish."; \
+        fi 
 
