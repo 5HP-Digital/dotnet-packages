@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
     <VersionPrefix>1.0.0</VersionPrefix>
+    <PackageTags>Extensions;Helpers;Async;String;Base Classes;Exceptions;Generic;Lookups</PackageTags>
 
     <RootNamespace>Digital5HP</RootNamespace>
   </PropertyGroup>
