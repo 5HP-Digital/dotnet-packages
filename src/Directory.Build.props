@@ -8,7 +8,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/5HP-Digital/dotnet-packages</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <PackageIcon>logo.ico</PackageIcon>
+    <PackageIcon>logo.jpg</PackageIcon>
 
     <RepositoryUrl>https://github.com/5HP-Digital/dotnet-packages.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -23,8 +23,8 @@
           Link="README.md"
           Pack="true"
           PackagePath="/" />
-    <None Include="$(MSBuildThisFileDirectory)..\logo.ico"
-          Link="logo.ico"
+    <None Include="$(MSBuildThisFileDirectory)..\logo.jpg"
+          Link="logo.jpg"
           Pack="true"
           PackagePath="/" />
   </ItemGroup>
