@@ -24,7 +24,6 @@
     (note that in this case PackageVersion attribute is superfluous as this is the default behavior of GenerateNuspec)
     <ProjectReference Include="..\MyOtherProject6\MyOtherProject6.csproj" PackageVersion="[~,)" />
   -->
-<UsingTask TaskName="CheckForDuplicateItems" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
 
   <Target Name="UseExplicitPackageVersions" BeforeTargets="GenerateNuspec">
     <ItemGroup>
