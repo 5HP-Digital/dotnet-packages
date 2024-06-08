@@ -9,77 +9,31 @@
     <ProjectReference Include="..\MyOtherProject1\MyOtherProject1.csproj" PackageVersion="[1.1.0, 2.0.0)" />
 
     This uses MyOtherProject2 with [x] where x is the project version
-    <ProjectReference Include="..\MyOtherProject2\MyOtherProject2.csproj" ExactVersion="true" />
+    <ProjectReference Include="..\MyOtherProject2\MyOtherProject2.csproj" PackageVersion="[~]" />
 
     This uses MyOtherProject3 with [1,x] where x is the project version
-    <ProjectReference Include="..\MyOtherProject3\MyOtherProject3.csproj" LimitedMinimumVersion="1" MinimumExcluded="false" />
+    <ProjectReference Include="..\MyOtherProject3\MyOtherProject3.csproj" PackageVersion="[1,~]" />
 
     This uses MyOtherProject4 with [x,2) where x is the project version
-    <ProjectReference Include="..\MyOtherProject4\MyOtherProject4.csproj" LimitedMaximumVersion="2" MaximumExcluded="true" />
+    <ProjectReference Include="..\MyOtherProject4\MyOtherProject4.csproj" PackageVersion="[~,2)" />
 
     This uses MyOtherProject5 with (,x] where x is the project version
-    <ProjectReference Include="..\MyOtherProject5\MyOtherProject5.csproj" MinimumExcluded="true" />
+    <ProjectReference Include="..\MyOtherProject5\MyOtherProject5.csproj" PackageVersion="(,~]" />
 
     This uses MyOtherProject6 with [x,) where x is the project version
-    <ProjectReference Include="..\MyOtherProject6\MyOtherProject6.csproj" MaximumExcluded="true" />
+    (note that in this case PackageVersion attribute is superfluous as this is the default behavior of GenerateNuspec)
+    <ProjectReference Include="..\MyOtherProject6\MyOtherProject6.csproj" PackageVersion="[~,)" />
   -->
-  <UsingTask TaskName="CheckForDuplicateItems" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+<UsingTask TaskName="CheckForDuplicateItems" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
 
   <Target Name="UseExplicitPackageVersions" BeforeTargets="GenerateNuspec">
     <ItemGroup>
-      <!-- Support for LimitedMinimumVersion attribute -->
-      <_ProjectReferenceWithLimitedMinimumPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.LimitedMinimumVersion)' != '' OR '%(ProjectReference.MinimumExcluded)' == 'true'" />
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithLimitedMinimumPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>@(_ProjectReferenceWithLimitedMinimumPackageVersion->'%(LimitedMinimumVersion)'),@(_ProjectReferencesWithVersions->'%(ProjectVersion)')</ProjectVersion>
-        <MinimumExcluded>@(_ProjectReferenceWithLimitedMinimumPackageVersion->'%(MinimumExcluded)')</MinimumExcluded>
-      </_ProjectReferenceWithReassignedVersion>
-
-      <!-- Support for LimitedMaximumVersion attribute -->
-      <_ProjectReferenceWithLimitedMaximumPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.LimitedMaximumVersion)' != '' OR '%(ProjectReference.MaximumExcluded)' == 'true'" />
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithLimitedMaximumPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>@(_ProjectReferencesWithVersions->'%(ProjectVersion)'),@(_ProjectReferenceWithLimitedMaximumPackageVersion->'%(LimitedMaximumVersion)')</ProjectVersion>
-        <MaximumExcluded>@(_ProjectReferenceWithLimitedMaximumPackageVersion->'%(MaximumExcluded)')</MaximumExcluded>
-      </_ProjectReferenceWithReassignedVersion>
-
-      <!-- Apply MinimumExcluded attributes -->
-      <_ProjectReferenceWithReassignedVersion Update="@(_ProjectReferenceWithReassignedVersion)">
-        <ProjectVersion Condition="'%(_ProjectReferenceWithReassignedVersion.MinimumExcluded)' == 'true'">(%(ProjectVersion)</ProjectVersion>
-        <ProjectVersion Condition="'%(_ProjectReferenceWithReassignedVersion.MinimumExcluded)' != 'true'">[%(ProjectVersion)</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-
-      <!-- Apply MaximumExcluded attributes -->
-      <_ProjectReferenceWithReassignedVersion Update="@(_ProjectReferenceWithReassignedVersion)">
-        <ProjectVersion Condition="'%(_ProjectReferenceWithReassignedVersion.MaximumExcluded)' == 'true'">%(ProjectVersion))</ProjectVersion>
-        <ProjectVersion Condition="'%(_ProjectReferenceWithReassignedVersion.MaximumExcluded)' != 'true'">%(ProjectVersion)]</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-
-      <!-- Support for ExactVersion attribute -->
-      <_ProjectReferenceWithExactPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.ExactVersion)' == 'true'" />
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExactPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>[@(_ProjectReferencesWithVersions->'%(ProjectVersion)')]</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-
-      <!-- Support for PackageVersion attribute -->
-      <_ProjectReferenceWithExplicitPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.PackageVersion)' != ''" />
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExplicitPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>@(_ProjectReferenceWithExplicitPackageVersion->'%(PackageVersion)')</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-    </ItemGroup>
-
-    <CheckForDuplicateItems
-      Items="@(_ProjectReferenceWithExplicitPackageVersion)"
-      ItemName="_ProjectReferenceWithExplicitPackageVersion"
-      DefaultItemsEnabled="false"
-      DefaultItemsOfThisTypeEnabled=""
-      PropertyNameToDisableDefaultItems="None"
-      MoreInformationLink="None"
-      ContinueOnError="false">
-    </CheckForDuplicateItems>
-
-    <ItemGroup>
-      <!-- Replace all reassigned versions -->
-      <_ProjectReferencesWithVersions Remove="@(_ProjectReferenceWithReassignedVersion)" />
-      <_ProjectReferencesWithVersions Include="@(_ProjectReferenceWithReassignedVersion)" />
+      <_ProjectReferencesWithVersions Condition="'%(FullPath)' != ''">
+        <PackageVersion>@(ProjectReference->'%(PackageVersion)')</PackageVersion>
+      </_ProjectReferencesWithVersions>
+      <_ProjectReferencesWithVersions Condition="'%(Identity)' != '' And '%(PackageVersion)' != ''">
+        <ProjectVersion>$([System.String]::new('%(PackageVersion)').Replace('~',%(ProjectVersion)))</ProjectVersion>
+      </_ProjectReferencesWithVersions>
     </ItemGroup>
   </Target>
 </Project>
