@@ -22,7 +22,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\docs\$(AssemblyName).md"
           Link="README.md"
           Pack="true"
-          PackagePath="/" />
+          PackagePath="/README.md" />
     <None Include="$(MSBuildThisFileDirectory)..\logo.jpg"
           Link="logo.jpg"
           Pack="true"
