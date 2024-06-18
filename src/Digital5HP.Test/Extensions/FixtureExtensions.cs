@@ -10,13 +10,13 @@ namespace Digital5HP.Test
     public static class FixtureExtensions
     {
         private static readonly ICustomization[] DefaultCustomizations =
-        {
+        [
             new AutoMoqCustomization
             {
                 ConfigureMembers = true,
             },
             new DefaultCustomization(),
-        };
+        ];
 
         public static T CustomizeDefault<T>([NotNull] this T fixture)
             where T : IFixture

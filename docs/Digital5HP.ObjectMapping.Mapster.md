@@ -1,0 +1,3 @@
+# Digital5HP.ObjectMapping.Mapster
+
+More information coming soon...

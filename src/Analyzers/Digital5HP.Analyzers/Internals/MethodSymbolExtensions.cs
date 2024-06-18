@@ -63,9 +63,9 @@ internal static class MethodSymbolExtensions
             while (type != null)
             {
                 var ns = type.ContainingNamespace;
-                if (ns.IsNamespace(new[] { "Microsoft", "VisualStudio", "TestTools", "UnitTesting" }) ||
-                    ns.IsNamespace(new[] { "NUnit", "Framework" }) ||
-                    ns.IsNamespace(new[] { "Xunit" }))
+                if (ns.IsNamespace(["Microsoft", "VisualStudio", "TestTools", "UnitTesting"]) ||
+                    ns.IsNamespace(["NUnit", "Framework"]) ||
+                    ns.IsNamespace(["Xunit"]))
                 {
                     return true;
                 }

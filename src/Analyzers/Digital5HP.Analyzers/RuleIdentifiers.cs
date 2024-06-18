@@ -11,7 +11,7 @@ internal static class RuleIdentifiers
     {
         return string.Format(
             CultureInfo.InvariantCulture,
-            "https://github.com/5HP-Digital/dotnet-packages/blob/main//src/Analyzers/Digital5HP.Analyzers/Digital5HP.Analyzers.md&anchor={0}&_a=preview",
+            "https://github.com/5HP-Digital/dotnet-packages/blob/main/docs/Digital5HP.Analyzers.md&anchor={0}&_a=preview",
             identifier);
     }
 }

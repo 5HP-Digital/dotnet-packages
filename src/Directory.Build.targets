@@ -1,24 +1,38 @@
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets"/>
 
-  <!-- Workaround for lack of ability to set version dependency on project references (see: https://github.com/NuGet/Home/issues/5556#issuecomment-1179526189 ) -->
+  <!-- Workaround for lack of ability to set version dependency on project references (see: https://github.com/NuGet/Home/issues/5556#issuecomment-2023068557 ) -->
   <!--
-    Example:
+    Examples:
+    
+    This uses MyOtherProject1 with [1.1.0, 2.0.0)
     <ProjectReference Include="..\MyOtherProject1\MyOtherProject1.csproj" PackageVersion="[1.1.0, 2.0.0)" />
-    <ProjectReference Include="..\MyOtherProject2\MyOtherProject.2csproj" ExactVersion="true" />
+
+    This uses MyOtherProject2 with [x] where x is the project version
+    <ProjectReference Include="..\MyOtherProject2\MyOtherProject2.csproj" PackageVersion="[~]" />
+
+    This uses MyOtherProject3 with [1,x] where x is the project version
+    <ProjectReference Include="..\MyOtherProject3\MyOtherProject3.csproj" PackageVersion="[1,~]" />
+
+    This uses MyOtherProject4 with [x,2) where x is the project version
+    <ProjectReference Include="..\MyOtherProject4\MyOtherProject4.csproj" PackageVersion="[~,2)" />
+
+    This uses MyOtherProject5 with (,x] where x is the project version
+    <ProjectReference Include="..\MyOtherProject5\MyOtherProject5.csproj" PackageVersion="(,~]" />
+
+    This uses MyOtherProject6 with [x,) where x is the project version
+    (note that in this case PackageVersion attribute is superfluous as this is the default behavior of GenerateNuspec)
+    <ProjectReference Include="..\MyOtherProject6\MyOtherProject6.csproj" PackageVersion="[~,)" />
   -->
+
   <Target Name="UseExplicitPackageVersions" BeforeTargets="GenerateNuspec">
     <ItemGroup>
-      <_ProjectReferenceWithExplicitPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.PackageVersion)' != ''" />
-      <_ProjectReferenceWithExactPackageVersion Include="@(ProjectReference->'%(FullPath)')" Condition="'%(ProjectReference.ExactVersion)' == 'true'" />
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExplicitPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>@(_ProjectReferenceWithExplicitPackageVersion->'%(PackageVersion)')</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-      <_ProjectReferenceWithReassignedVersion Include="@(_ProjectReferencesWithVersions)" Condition="'%(Identity)' != '' And '@(_ProjectReferenceWithExactPackageVersion)' == '@(_ProjectReferencesWithVersions)'">
-        <ProjectVersion>[@(_ProjectReferencesWithVersions->'%(ProjectVersion)')]</ProjectVersion>
-      </_ProjectReferenceWithReassignedVersion>
-      <_ProjectReferencesWithVersions Remove="@(_ProjectReferenceWithReassignedVersion)" />
-      <_ProjectReferencesWithVersions Include="@(_ProjectReferenceWithReassignedVersion)" />
+      <_ProjectReferencesWithVersions Condition="'%(FullPath)' != ''">
+        <PackageVersion>@(ProjectReference->'%(PackageVersion)')</PackageVersion>
+      </_ProjectReferencesWithVersions>
+      <_ProjectReferencesWithVersions Condition="'%(Identity)' != '' And '%(PackageVersion)' != ''">
+        <ProjectVersion>$([System.String]::new('%(PackageVersion)').Replace('~',%(ProjectVersion)))</ProjectVersion>
+      </_ProjectReferencesWithVersions>
     </ItemGroup>
   </Target>
 </Project>

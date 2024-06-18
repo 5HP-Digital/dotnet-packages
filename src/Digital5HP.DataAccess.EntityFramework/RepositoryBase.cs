@@ -1,4 +1,4 @@
-﻿namespace Digital5HP.DataAccess.EntityFramework;
+namespace Digital5HP.DataAccess.EntityFramework;
 
 using System;
 
@@ -6,7 +6,9 @@ using Digital5HP.Logging;
 
 public abstract class RepositoryBase(ILogger logger, IDbContext context) : IRepository
 {
+#pragma warning disable CA2213 // Disposable fields should be disposed
     private readonly IDbContext context = context ?? throw new EntityFrameworkException("Data access context was not initialized.");
+#pragma warning restore CA2213 // Disposable fields should be disposed
 
     /// <summary>
     /// Indicates whether the current repository is read-only (no change tracking).

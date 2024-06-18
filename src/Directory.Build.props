@@ -2,13 +2,31 @@
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props"/>
 
   <PropertyGroup>
-    <IsPackable>true</IsPackable>
-
     <Company>5HP Digital</Company>
-  </PropertyGroup>
+
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/5HP-Digital/dotnet-packages</PackageProjectUrl>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageIcon>logo.jpg</PackageIcon>
+
+    <RepositoryUrl>https://github.com/5HP-Digital/dotnet-packages.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+</PropertyGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Tests.Unit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\docs\$(AssemblyName).md"
+          Link="README.md"
+          Pack="true"
+          PackagePath="/README.md" />
+    <None Include="$(MSBuildThisFileDirectory)..\logo.jpg"
+          Link="logo.jpg"
+          Pack="true"
+          PackagePath="/" />
   </ItemGroup>
 
 </Project>

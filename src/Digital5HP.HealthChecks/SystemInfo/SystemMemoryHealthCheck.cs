@@ -34,9 +34,9 @@ public class SystemMemoryHealthCheck : IHealthCheck
     private const int DEGRADED_THRESHOLD = 90;
 
     private static readonly string[] UnitsOfData =
-    {
-        "KiB", "MiB", "GiB", "TiB"
-    };
+    [
+        "KiB", "MiB", "GiB", "TiB",
+    ];
 
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
                                                     CancellationToken cancellationToken = default)

@@ -22,7 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 		LICENSE = LICENSE
-		README.md = README.md
+		logo.jpg = logo.jpg
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digital5HP.Logging.Serilog", "src\Digital5HP.Logging.Serilog\Digital5HP.Logging.Serilog.csproj", "{5CDF2B45-7BD3-4962-8F2B-819BA93CDB77}"
@@ -72,6 +73,21 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digital5HP.ObjectMapping.Tests.Unit", "tests\Digital5HP.ObjectMapping.Tests.Unit\Digital5HP.ObjectMapping.Tests.Unit.csproj", "{D0B90D14-3025-42C8-BF91-C95021741C9F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digital5HP.Test", "src\Digital5HP.Test\Digital5HP.Test.csproj", "{8DA92E03-77D2-44D6-B418-4F06E646FD98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{F3CE7738-51F6-44D5-BA03-BF95B2CFC71B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{6FB96E7A-AAAD-47AD-88B2-5ECEB0D8D7E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{91D7CF76-E125-494B-91F2-9B9ABDD23C0D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pr.yml = .github\workflows\pr.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A73B4866-8F3E-40F5-A83F-B4D49CADACEF}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,6 +201,8 @@ Global
 		{659538C1-A86E-40DF-B892-354E288D0D24} = {71EBA262-4E52-404D-9504-B5B69BFEA1A3}
 		{D0B90D14-3025-42C8-BF91-C95021741C9F} = {71EBA262-4E52-404D-9504-B5B69BFEA1A3}
 		{8DA92E03-77D2-44D6-B418-4F06E646FD98} = {4906BBBD-42FC-4FA4-9F67-11B4AC2A48B7}
+		{6FB96E7A-AAAD-47AD-88B2-5ECEB0D8D7E0} = {F3CE7738-51F6-44D5-BA03-BF95B2CFC71B}
+		{91D7CF76-E125-494B-91F2-9B9ABDD23C0D} = {6FB96E7A-AAAD-47AD-88B2-5ECEB0D8D7E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F0B64CE-ECA7-4B47-A92D-48469DB8FF2B}

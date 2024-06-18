@@ -14,7 +14,9 @@ using Microsoft.Extensions.Options;
 public abstract class ContextBase(IOptions<ContextOptions> contextOptions, ILoggerFactory loggerFactory) : DbContext, IDbContext
 {
     private readonly IOptions<ContextOptions> contextOptions = contextOptions;
+#pragma warning disable CA2213 // Disposable fields should be disposed
     private readonly ILoggerFactory loggerFactory = loggerFactory;
+#pragma warning restore CA2213 // Disposable fields should be disposed
 
     public bool IsDetached(object entity)
     {
