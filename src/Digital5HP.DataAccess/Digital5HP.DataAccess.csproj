@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
 
     <PackageTags>Data Access;Context;Unit of Work;Repository;Specification;Design Pattern;Depedency Injection;Abstraction;Health Check</PackageTags>
   </PropertyGroup>
