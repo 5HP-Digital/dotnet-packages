@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
 
     <PackageTags>Unit Testing;Integration Testing;xUnit;Moq;AutoFixture;FluentAssertions;Logging;Dependency Injection</PackageTags>
 
