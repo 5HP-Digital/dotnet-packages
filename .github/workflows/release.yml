@@ -16,10 +16,10 @@ jobs:
       id: changes
       run: |
         git fetch origin main
-        git diff --name-only origin/main
+        git diff --name-only ${{ github.event.before }}
         {
           echo "changed_files<<EOF"
-          git diff --name-only origin/main
+          git diff --name-only ${{ github.event.before }}
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
   
