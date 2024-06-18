@@ -119,6 +119,11 @@ jobs:
       if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Test/')
       run: dotnet pack ./src/Digital5HP.Test/Digital5HP.Test.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
 
+      # Digital5HP.Identity
+    - name: Pack Digital5HP.Identity
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Identity/')
+      run: dotnet pack ./src/Digital5HP.Identity/Digital5HP.Identity.csproj -o ./nuget-packages --version-suffix ${{ env.VERSION_SUFFIX }} --configuration Release --no-build
+
     - name: Publish NuGet packages
       if: success()
       run: |

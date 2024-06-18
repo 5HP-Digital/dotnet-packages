@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Digital5HP.Identity\Digital5HP.Identity.csproj" />
+    <ProjectReference Include="..\..\src\Digital5HP.Test\Digital5HP.Test.csproj" />
+  </ItemGroup>
+
+</Project>
