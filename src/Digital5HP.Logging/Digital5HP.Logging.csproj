@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.0.1</VersionPrefix>
 
     <PackageTags>Structured Logging;Dependency Injection</PackageTags>
   </PropertyGroup>

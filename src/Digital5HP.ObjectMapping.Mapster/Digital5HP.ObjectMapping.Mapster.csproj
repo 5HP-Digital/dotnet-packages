@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.0.1</VersionPrefix>
 
     <PackageTags>Mapster;Object Mapping;Dependency Injection;Abstraction</PackageTags>
   </PropertyGroup>
