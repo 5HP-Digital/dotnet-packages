@@ -37,14 +37,14 @@ namespace Digital5HP.Core.Tests.Unit
             // Arrange
             var methodInfo = typeof(ObjectExtensions).GetMethod(
                 nameof(ObjectExtensions.ChangeType),
-                new[] {typeof(object)});
+                [typeof(object)]);
 
             Debug.Assert(methodInfo != null, nameof(methodInfo) + " != null");
 
             var genericMethodInfo = methodInfo.MakeGenericMethod(type);
 
             // Act
-            var result = genericMethodInfo.Invoke(null, new[] {value});
+            var result = genericMethodInfo.Invoke(null, [value]);
 
             // Assert
             result.Should()

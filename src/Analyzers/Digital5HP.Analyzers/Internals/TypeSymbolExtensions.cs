@@ -190,20 +190,17 @@ internal static class TypeSymbolExtensions
             {
                 var ns = type.ContainingNamespace;
                 if (ns.IsNamespace(
-                        new[]
-                        {
+                        [
                             "Microsoft", "VisualStudio", "TestTools", "UnitTesting"
-                        })
+                        ])
                     || ns.IsNamespace(
-                        new[]
-                        {
+                        [
                             "NUnit", "Framework"
-                        })
+                        ])
                     || ns.IsNamespace(
-                        new[]
-                        {
+                        [
                             "Xunit"
-                        }))
+                        ]))
                 {
                     return true;
                 }

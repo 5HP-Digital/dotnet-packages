@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    private static readonly string[] Tags = new[]
-            {
+    private static readonly string[] Tags =
+            [
                 "postgresql", "entity-framework"
-            };
+            ];
 
     public static IServiceCollection AddEntityFrameworkPostgreSQL<TContext>(this IServiceCollection services)
         where TContext : ContextBase, IDbContext

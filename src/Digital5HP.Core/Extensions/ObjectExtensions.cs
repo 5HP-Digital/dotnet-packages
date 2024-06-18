@@ -211,10 +211,9 @@ public static class ObjectExtensions
 
             result = convert.Method!.Invoke(
                 null,
-                new[]
-                {
+                [
                     from,
-                });
+                ]);
 
             return true;
         }

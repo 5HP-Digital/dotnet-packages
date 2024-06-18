@@ -180,7 +180,7 @@ namespace Digital5HP.Test
                      BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance,
                      null,
                      methodCall,
-                     new[] {action},
+                     [action],
                      CultureInfo.InvariantCulture);
 
             return mock as IReturnsThrows<TMock, TReturn>;
@@ -201,7 +201,7 @@ namespace Digital5HP.Test
                      BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance,
                      null,
                      methodCall,
-                     new[] { action },
+                     [action],
                      CultureInfo.InvariantCulture);
 
             return (ICallbackResult)mock;
