@@ -25,7 +25,10 @@ jobs:
 
     - name: Set version suffix
       id: set_version_suffix
-      run: echo "VERSION_SUFFIX=pre-$(printf '%04d' ${{ github.run_number }})-$(printf '%02d' ${{ github.run_attempt }})" >> $GITHUB_ENV
+      run: |
+        version_suffix=pre-$(printf '%04d' ${{ github.run_number }})-$(printf '%02d' ${{ github.run_attempt }})
+        echo "VERSION_SUFFIX=$version_suffix" >> $GITHUB_ENV
+        echo "Version Suffix is $version_suffix"
   
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
