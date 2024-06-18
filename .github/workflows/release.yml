@@ -15,7 +15,7 @@ jobs:
     - name: Check for changes
       id: changes
       run: |
-        git fetch origin main
+        git fetch origin ${{ github.event.before }}
         git diff --name-only ${{ github.event.before }}
         {
           echo "changed_files<<EOF"
