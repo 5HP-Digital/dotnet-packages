@@ -116,6 +116,11 @@ jobs:
     - name: Pack Digital5HP.Identity
       if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Identity/')
       run: dotnet pack ./src/Digital5HP.Identity/Digital5HP.Identity.csproj -o ./nuget-packages --configuration Release --no-build
+      
+      # Digital5HP.Text.M3U
+    - name: Pack Digital5HP.Text.M3U
+      if: contains(steps.changes.outputs.changed_files, 'src/Digital5HP.Text.M3U/')
+      run: dotnet pack ./src/Digital5HP.Text.M3U/Digital5HP.Text.M3U.csproj -o ./nuget-packages --configuration Release --no-build
 
     - name: Publish NuGet packages
       if: success()
