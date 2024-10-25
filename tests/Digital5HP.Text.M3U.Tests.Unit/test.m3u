@@ -1,0 +1,29 @@
+#EXTM3U
+
+#EXT-X-VERSION:1
+#EXT-X-TARGETDURATION:-1
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PLAYLIST-TYPE:VOD
+
+#EXTINF:-1 tvg-id="channel1" tvg-name="Some Channel Name" tvg-logo="http://logo.com/wow.png" group-title="Cool Group",Some Channel Name
+http://my.channel.com/1234
+
+#EXTINF:-1 tvg-id="channel2" tvg-name="Yet Another Channel" tvg-logo="http://logo.com/wow.png" group-title="Cool Group",Yet Another Channel
+http://my.channel.com/4321
+
+#EXTINF:-1 tvg-id="" tvg-name="Yet Another Channel, Again" tvg-logo="" group-title="",Yet Another Channel, Again
+http://my.channel.com/4444
+
+#EXTINF:-1 tvg-name="Slim Channel",Slim Channel
+http://my.channel.com/6789
+
+#EXTINF:-1
+http://my.channel.com/0000
+
+#EXTINF:-1 tvg-id="channel0" tvg-name="Tagged Channel"
+#EXTGRP:Cool Group
+#EXTIMG:http://logo.com/wow.png
+#PLAYLIST:Tagged Channel
+http://my.channel.com/9898
+
+#EXT-X-ENDLIST
