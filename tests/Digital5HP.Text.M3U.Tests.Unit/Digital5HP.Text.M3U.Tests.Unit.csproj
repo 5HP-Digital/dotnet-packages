@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Digital5HP.Test\Digital5HP.Test.csproj" />
+    <ProjectReference Include="..\..\src\Digital5HP.Text.M3U\Digital5HP.Text.M3U.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="test.m3u">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
