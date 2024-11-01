@@ -61,7 +61,7 @@ public sealed class CronScheduler(
         var runMap = new Dictionary<DateTime, List<Type>>();
         foreach (var cron in this.cronJobs)
         {
-            var runDates = cron.Schedule.GetNextOccurrences(now, now.AddMinutes(1));
+            var runDates = cron.GetSchedule(this.serviceProvider).GetNextOccurrences(now, now.AddMinutes(1));
             if (runDates is not null)
             {
                 AddJobRuns(runMap, runDates, cron);
