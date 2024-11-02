@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
     <PackageTags>Extensions;Helpers;Async;String;Base Classes;Exceptions;Generic;Lookups</PackageTags>
 
     <RootNamespace>Digital5HP</RootNamespace>
