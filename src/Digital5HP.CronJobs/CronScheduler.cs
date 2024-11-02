@@ -10,10 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public sealed class CronScheduler(
     IServiceProvider serviceProvider,
-    IReadOnlyCollection<CronRegistryEntry> cronJobs) : BackgroundService
+    IEnumerable<CronRegistryEntry> cronJobs) : BackgroundService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
-    private readonly IReadOnlyCollection<CronRegistryEntry> cronJobs = cronJobs;
+    private readonly IEnumerable<CronRegistryEntry> cronJobs = cronJobs;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
