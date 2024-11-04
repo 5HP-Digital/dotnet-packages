@@ -1,6 +1,5 @@
-namespace Digital5HP.Identity.Tests.Unit;
+namespace Digital5HP.Text.M3U.Tests.Unit;
 
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 
 using Digital5HP.Test;

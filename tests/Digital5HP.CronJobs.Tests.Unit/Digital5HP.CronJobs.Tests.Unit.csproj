@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Digital5HP.Test\Digital5HP.Test.csproj" />
+    <ProjectReference Include="..\..\src\Digital5HP.CronJobs\Digital5HP.CronJobs.csproj" />
+  </ItemGroup>
+
+</Project>
