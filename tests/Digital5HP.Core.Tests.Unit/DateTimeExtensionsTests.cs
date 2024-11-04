@@ -1,6 +1,8 @@
-﻿namespace Digital5HP.Core.Tests.Unit
+namespace Digital5HP.Core.Tests.Unit
 {
     using System;
+
+    using AutoFixture.Xunit2;
 
     using FluentAssertions;
 
@@ -18,6 +20,58 @@
             // Assert
             result.Should()
                   .Be(expected);
+        }
+
+        [Theory]
+        [AutoData]
+        public void Truncate_Hour_Succeed(DateTime date)
+        {
+            // Arrange
+
+            // Act
+            var result = date.Truncate(TimeSpan.FromHours(1));
+
+            // Assert
+            result.Year.Should()
+                .Be(date.Year);
+            result.Month.Should()
+                .Be(date.Month);
+            result.Day.Should()
+                .Be(date.Day);
+            result.Hour.Should()
+                .Be(date.Hour);
+            result.Minute.Should()
+                .Be(0);
+            result.Second.Should()
+                .Be(0);
+            result.Millisecond.Should()
+                .Be(0);
+        }
+
+        [Theory]
+        [AutoData]
+        public void Truncate_Minute_Succeed(DateTime date)
+        {
+            // Arrange
+
+            // Act
+            var result = date.Truncate(TimeSpan.FromMinutes(1));
+
+            // Assert
+            result.Year.Should()
+                .Be(date.Year);
+            result.Month.Should()
+                .Be(date.Month);
+            result.Day.Should()
+                .Be(date.Day);
+            result.Hour.Should()
+                .Be(date.Hour);
+            result.Minute.Should()
+                .Be(date.Minute);
+            result.Second.Should()
+                .Be(0);
+            result.Millisecond.Should()
+                .Be(0);
         }
 
         private class TestData : TheoryData<DateTime, DateTime, decimal>
