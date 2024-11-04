@@ -18,12 +18,12 @@ public sealed class CronScheduler(
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // Create a timer that has a resolution less than 60 seconds
-        // Because cron has a resolution of a minute
-        // So everything under will work
-        using var tickTimer = new PeriodicTimer(TimeSpan.FromSeconds(30));
+        // Because cron has a resolution of a minute so everything under will work
+        using var tickTimer = new PeriodicTimer(TimeSpan.FromSeconds(45));
+
 
         // Create a map of the next upcoming entries
-        var runMap = new Dictionary<DateTime, List<Type>>();
+        var runMap = new Dictionary<DateTime, HashSet<Type>>();
         while (await tickTimer.WaitForNextTickAsync(stoppingToken))
         {
             // Get UTC Now with minute resolution (remove microseconds and seconds)
@@ -37,7 +37,7 @@ public sealed class CronScheduler(
         }
     }
 
-    private void RunActiveJobs(Dictionary<DateTime, List<Type>> runMap, DateTime now, CancellationToken stoppingToken)
+    private void RunActiveJobs(Dictionary<DateTime, HashSet<Type>> runMap, DateTime now, CancellationToken stoppingToken)
     {
         if (!runMap.TryGetValue(now, out var currentRuns))
         {
@@ -54,14 +54,17 @@ public sealed class CronScheduler(
             // could interfere with other job runs
             _ = job.RunAsync(stoppingToken);
         }
+
+        runMap.Remove(now);
     }
 
-    private Dictionary<DateTime, List<Type>> GetJobRuns(DateTime now)
+    private Dictionary<DateTime, HashSet<Type>> GetJobRuns(DateTime now)
     {
-        var runMap = new Dictionary<DateTime, List<Type>>();
+        var runMap = new Dictionary<DateTime, HashSet<Type>>();
         foreach (var cron in this.cronJobs)
         {
-            var runDates = cron.GetSchedule(this.serviceProvider).GetNextOccurrences(now, now.AddMinutes(1));
+            var runDates = cron.GetSchedule(this.serviceProvider)
+                .GetNextOccurrences(now, now.AddSeconds(61)); // since both baseTime and endTime are exclusive, we need to add a second for the end minute to be included.
             if (runDates is not null)
             {
                 AddJobRuns(runMap, runDates, cron);
@@ -71,7 +74,7 @@ public sealed class CronScheduler(
         return runMap;
     }
 
-    private static void AddJobRuns(Dictionary<DateTime, List<Type>> runMap, IEnumerable<DateTime> runDates, CronRegistryEntry cron)
+    private static void AddJobRuns(Dictionary<DateTime, HashSet<Type>> runMap, IEnumerable<DateTime> runDates, CronRegistryEntry cron)
     {
         ArgumentNullException.ThrowIfNull(runMap);
 
