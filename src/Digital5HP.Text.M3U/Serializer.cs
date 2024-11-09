@@ -23,10 +23,13 @@ public static partial class Serializer
     private const string M3U_END_LIST_TAG = "EXT-X-ENDLIST";
     private const string M3U_PLAYLIST_TYPE_TAG = "EXT-X-PLAYLIST-TYPE";
 
-    private const string M3U_CHANNEL_ID_ATTRIBUTE = "tvg-id";
-    private const string M3U_CHANNEL_NAME_ATTRIBUTE = "tvg-name";
-    private const string M3U_CHANNEL_LOGO_ATTRIBUTE = "tvg-logo";
+    private const string M3U_CHANNEL_TVG_ID_ATTRIBUTE = "tvg-id";
+    private const string M3U_CHANNEL_TVG_NAME_ATTRIBUTE = "tvg-name";
+    private const string M3U_CHANNEL_TVG_LOGO_ATTRIBUTE = "tvg-logo";
+    private const string M3U_CHANNEL_TVG_CHNO_ATTRIBUTE = "tvg-chno";
     private const string M3U_CHANNEL_GROUP_ATTRIBUTE = "group-title";
+    private const string M3U_CHANNEL_ID_ATTRIBUTE = "channel-id";
+    private const string M3U_CHANNEL_NUMBER_ATTRIBUTE = "channel-number";
 
     private static readonly Regex TagRegex = CreateTagRegex();
     private static readonly Regex ExtinfAttributesRegex = CreateExtinfAttributesRegex();
@@ -106,17 +109,24 @@ public static partial class Serializer
             await writer.WriteAsync($"#{M3U_CHANNEL_TAG}:{channel.Duration}");
 
             if (channel.TvgId != null)
-                await writer.WriteAsync($" {M3U_CHANNEL_ID_ATTRIBUTE}=\"{channel.TvgId}\"");
+                await writer.WriteAsync($" {M3U_CHANNEL_TVG_ID_ATTRIBUTE}=\"{channel.TvgId}\"");
             if (channel.TvgName != null)
-                await writer.WriteAsync($" {M3U_CHANNEL_NAME_ATTRIBUTE}=\"{channel.TvgName}\"");
+                await writer.WriteAsync($" {M3U_CHANNEL_TVG_NAME_ATTRIBUTE}=\"{channel.TvgName}\"");
+            if (channel.TvgChannelNumber != null)
+                await writer.WriteAsync($" {M3U_CHANNEL_TVG_CHNO_ATTRIBUTE}=\"{channel.TvgChannelNumber}\"");
 
             if (serializationOptions.ChannelFormat == ChannelFormatType.Attributes)
             {
                 if (channel.LogoUrl != null)
-                    await writer.WriteAsync($" {M3U_CHANNEL_LOGO_ATTRIBUTE}=\"{channel.LogoUrl}\"");
+                    await writer.WriteAsync($" {M3U_CHANNEL_TVG_LOGO_ATTRIBUTE}=\"{channel.LogoUrl}\"");
                 if (channel.GroupTitle != null)
                     await writer.WriteAsync($" {M3U_CHANNEL_GROUP_ATTRIBUTE}=\"{channel.GroupTitle}\"");
             }
+
+            if (channel.ChannelId != null)
+                await writer.WriteAsync($" {M3U_CHANNEL_ID_ATTRIBUTE}=\"{channel.ChannelId}\"");
+            if (channel.ChannelNumber != null)
+                await writer.WriteAsync($" {M3U_CHANNEL_NUMBER_ATTRIBUTE}=\"{channel.ChannelNumber}\"");
 
             await writer.WriteLineAsync($",{channel.Title ?? ""}");
 
@@ -266,10 +276,23 @@ public static partial class Serializer
             .Cast<Match>()
             .ToDictionary(match => match.Groups["attr"].Value, match => match.Groups["value"].Value, StringComparer.OrdinalIgnoreCase);
 
-        channel.TvgId = attributes.GetValueOrDefault(M3U_CHANNEL_ID_ATTRIBUTE, channel.TvgId);
-        channel.TvgName = attributes.GetValueOrDefault(M3U_CHANNEL_NAME_ATTRIBUTE, channel.TvgName);
-        channel.LogoUrl = attributes.GetValueOrDefault(M3U_CHANNEL_LOGO_ATTRIBUTE, channel.LogoUrl);
+        channel.TvgId = attributes.GetValueOrDefault(M3U_CHANNEL_TVG_ID_ATTRIBUTE, channel.TvgId);
+        channel.TvgName = attributes.GetValueOrDefault(M3U_CHANNEL_TVG_NAME_ATTRIBUTE, channel.TvgName);
+        channel.TvgChannelNumber = int.TryParse(
+            attributes.GetValueOrDefault(M3U_CHANNEL_TVG_CHNO_ATTRIBUTE, channel.TvgChannelNumber?.ToString(CultureInfo.InvariantCulture)),
+            CultureInfo.InvariantCulture,
+            out var tvgChno)
+            ? tvgChno
+            : null;
+        channel.LogoUrl = attributes.GetValueOrDefault(M3U_CHANNEL_TVG_LOGO_ATTRIBUTE, channel.LogoUrl);
         channel.GroupTitle = attributes.GetValueOrDefault(M3U_CHANNEL_GROUP_ATTRIBUTE, channel.GroupTitle);
+        channel.ChannelId = attributes.GetValueOrDefault(M3U_CHANNEL_ID_ATTRIBUTE, channel.ChannelId);
+        channel.ChannelNumber = int.TryParse(
+            attributes.GetValueOrDefault(M3U_CHANNEL_NUMBER_ATTRIBUTE, defaultValue: channel.ChannelNumber?.ToString(CultureInfo.InvariantCulture)),
+            CultureInfo.InvariantCulture,
+            out var channelNum)
+            ? channelNum
+            : null;
         if (!int.TryParse(value.Split(' ')[0], CultureInfo.InvariantCulture, out var duration))
             throw new SerializationException($"Invalid Extended M3U Playlist format: invalid value for tag '{M3U_CHANNEL_TAG}'");
         channel.Duration = duration;

@@ -47,7 +47,7 @@ public class SerializerTests : FixtureBase
         const string EXPECTED_RESULT = @"#EXTM3U
 #EXTINF:-1 tvg-id=""channel1"" tvg-name=""Some Channel Name"" tvg-logo=""http://logo.com/wow.png"" group-title=""Cool Group"",Some Channel Name
 http://my.channel.com/1234
-#EXTINF:-1 tvg-id=""channel2"" tvg-name=""Yet Another Channel"" tvg-logo=""http://logo.com/wow.png"" group-title=""Cool Group"",Yet Another Channel
+#EXTINF:-1 tvg-id=""channel2"" tvg-name=""Yet Another Channel"" tvg-chno=""2"" tvg-logo=""http://logo.com/wow.png"" group-title=""Cool Group"" channel-id=""123"" channel-number=""2"",Yet Another Channel
 http://my.channel.com/4321
 #EXTINF:-1 tvg-id="""" tvg-name=""Yet Another Channel, Again"" tvg-logo="""" group-title="""",Yet Another Channel, Again
 http://my.channel.com/4444
@@ -70,10 +70,13 @@ http://my.channel.com/0000
         {
             TvgId = "channel2",
             TvgName = "Yet Another Channel",
+            TvgChannelNumber = 2,
             LogoUrl = "http://logo.com/wow.png",
             GroupTitle = "Cool Group",
             Title = "Yet Another Channel",
-            MediaUrl = "http://my.channel.com/4321"
+            MediaUrl = "http://my.channel.com/4321",
+            ChannelId = "123",
+            ChannelNumber = 2
         });
         document.Channels.Add(new Channel()
         {
