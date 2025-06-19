@@ -149,7 +149,6 @@ public static partial class Serializer
         await writer.FlushAsync();
     }
 
-
     private static async Task<Document> DeserializeInternalAsync(TextReader reader)
     {
         var doc = new Document();
