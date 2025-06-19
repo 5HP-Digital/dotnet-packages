@@ -26,4 +26,10 @@ http://my.channel.com/0000
 #PLAYLIST:Tagged Channel
 http://my.channel.com/9898
 
+#EXTINF:-1,
+http://my.channel.com/1111
+
+#EXTINF:-1,Last Channel
+http://my.channel.com/9999
+
 #EXT-X-ENDLIST

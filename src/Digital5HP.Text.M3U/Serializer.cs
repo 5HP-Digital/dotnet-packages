@@ -148,7 +148,6 @@ public static partial class Serializer
 
         await writer.FlushAsync();
     }
-    
 
     private static async Task<Document> DeserializeInternalAsync(TextReader reader)
     {
@@ -293,7 +292,7 @@ public static partial class Serializer
             out var channelNum)
             ? channelNum
             : null;
-        if (!int.TryParse(value.Split(' ')[0], CultureInfo.InvariantCulture, out var duration))
+        if (!int.TryParse(value.Split(' ', ',')[0], CultureInfo.InvariantCulture, out var duration))
             throw new SerializationException($"Invalid Extended M3U Playlist format: invalid value for tag '{M3U_CHANNEL_TAG}'");
         channel.Duration = duration;
 

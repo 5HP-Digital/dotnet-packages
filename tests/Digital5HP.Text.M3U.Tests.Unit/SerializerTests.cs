@@ -37,7 +37,7 @@ public class SerializerTests : FixtureBase
               .Be("VOD");
 
         result.Channels.Should()
-            .HaveCount(6);
+            .HaveCount(8);
     }
 
     [Fact]
