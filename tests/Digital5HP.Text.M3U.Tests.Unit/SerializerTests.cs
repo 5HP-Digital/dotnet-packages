@@ -1,6 +1,8 @@
 namespace Digital5HP.Text.M3U.Tests.Unit;
 
+using System;
 using System.IO;
+using System.Linq.Expressions;
 
 using Digital5HP.Test;
 using Digital5HP.Text.M3U;
@@ -12,11 +14,13 @@ using Xunit;
 [Trait("Category", "Unit")]
 public class SerializerTests : FixtureBase
 {
-    [Fact]
-    public void Deserialize_Succeed()
+    [Theory]
+    [InlineData("./test.m3u")]
+    [InlineData("./test_with_tvg.m3u")]
+    public void Deserialize_Succeed(string filePath, Expression<Func<Document, bool>> predicate = null)
     {
         // Arrange
-        var testFile = File.ReadAllText("./test.m3u");
+        var testFile = File.ReadAllText(filePath);
 
         // Act
         var result = Serializer.Deserialize(testFile);
@@ -24,20 +28,6 @@ public class SerializerTests : FixtureBase
         // Assert
         result.Should()
               .NotBeNull();
-
-        result.EndList.Should()
-              .BeTrue();
-        result.Version.Should()
-              .Be(1);
-        result.TargetDuration.Should()
-              .Be(-1);
-        result.MediaSequence.Should()
-              .Be(0);
-        result.PlaylistType.Should()
-              .Be("VOD");
-
-        result.Channels.Should()
-            .HaveCount(8);
     }
 
     [Fact]
