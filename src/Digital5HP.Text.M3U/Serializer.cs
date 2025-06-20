@@ -2,6 +2,8 @@ namespace Digital5HP.Text.M3U;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -23,6 +25,8 @@ public static partial class Serializer
     private const string M3U_END_LIST_TAG = "EXT-X-ENDLIST";
     private const string M3U_PLAYLIST_TYPE_TAG = "EXT-X-PLAYLIST-TYPE";
 
+    private const string M3U_HEADER_URL_TVG_ATTRIBUTE = "url-tvg";
+
     private const string M3U_CHANNEL_TVG_ID_ATTRIBUTE = "tvg-id";
     private const string M3U_CHANNEL_TVG_NAME_ATTRIBUTE = "tvg-name";
     private const string M3U_CHANNEL_TVG_LOGO_ATTRIBUTE = "tvg-logo";
@@ -31,6 +35,7 @@ public static partial class Serializer
     private const string M3U_CHANNEL_ID_ATTRIBUTE = "channel-id";
     private const string M3U_CHANNEL_NUMBER_ATTRIBUTE = "channel-number";
 
+    private static readonly Regex HeaderRegex = CreateHeaderRegex();
     private static readonly Regex TagRegex = CreateTagRegex();
     private static readonly Regex ExtinfAttributesRegex = CreateExtinfAttributesRegex();
     private static readonly Regex ExtinfTitleRegex = CreateExtinfTitleRegex();
@@ -93,7 +98,9 @@ public static partial class Serializer
 
         await using var writer = new StreamWriter(stream, leaveOpen: true);
 
-        await writer.WriteLineAsync($"#{M3U_HEADER_TAG}");
+        var header = $"#{M3U_HEADER_TAG}";
+        if (document.Tvg != null) header += $" url-tvg=\"{document.Tvg}\"";
+        await writer.WriteLineAsync(header);
 
         if (document.PlaylistType != null)
             await writer.WriteLineAsync($"#{M3U_PLAYLIST_TYPE_TAG}:{document.PlaylistType}");
@@ -155,8 +162,21 @@ public static partial class Serializer
 
         var line = await reader.ReadLineAsync();
 
-        if (!TryParseLine(line, out var tagPair) || tagPair.Tag != M3U_HEADER_TAG || tagPair.Value != null)
+        if (!TryParseHeader(line, out var headerAttributes))
             throw new SerializationException("Invalid Extended M3U Playlist format: EXTM3U tag expected or invalid.");
+
+        foreach (var (key, value) in headerAttributes)
+        {
+            switch (key)
+            {
+                case M3U_HEADER_URL_TVG_ATTRIBUTE:
+                    doc.Tvg = value;
+                    break;
+                default:
+                    throw new SerializationException(
+                        $"Invalid Extended M3U Playlist format: unknown header tag '{key}'");
+            }
+        }
 
         while ((line = await reader.ReadLineAsync()) != null)
         {
@@ -165,7 +185,7 @@ public static partial class Serializer
                 continue;
 
             // parse line
-            if (!TryParseLine(line, out tagPair))
+            if (!TryParseLine(line, out var tagPair))
             {
                 throw new SerializationException($"Invalid Extended M3U Playlist format: invalid text in '{line}'");
             }
@@ -252,6 +272,20 @@ public static partial class Serializer
         return doc;
     }
 
+    private static bool TryParseHeader(string line, out IReadOnlyDictionary<string, string> attributes)
+    {
+        var match = HeaderRegex.Match(line);
+
+        attributes = match.Groups["attr"].Success
+            ? new Dictionary<string, string>(Enumerable.Range(0, match.Groups["attr"].Captures.Count)
+                .Select(i => new KeyValuePair<string, string>(
+                    match.Groups["attr"].Captures[i].Value,
+                    match.Groups["value"].Captures[i].Value)), StringComparer.Ordinal)
+            : [];
+
+        return match.Success;
+    }
+
     private static bool TryParseLine(string line, out (string Tag, string Value) tagPair)
     {
         var match = TagRegex.Match(line);
@@ -272,7 +306,6 @@ public static partial class Serializer
             return false;
 
         var attributes = ExtinfAttributesRegex.Matches(value)
-            .Cast<Match>()
             .ToDictionary(match => match.Groups["attr"].Value, match => match.Groups["value"].Value, StringComparer.OrdinalIgnoreCase);
 
         channel.TvgId = attributes.GetValueOrDefault(M3U_CHANNEL_TVG_ID_ATTRIBUTE, channel.TvgId);
@@ -303,6 +336,8 @@ public static partial class Serializer
         return true;
     }
 
+    [GeneratedRegex("^#EXTM3U( (?<attr>[a-z][a-z-]*)=\"(?<value>[^\"]*?)\")*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex CreateHeaderRegex();
     [GeneratedRegex("^#(?<key>[a-zA-Z][a-zA-Z0-9-]+)(:(?<value>.+))?$", RegexOptions.Compiled | RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)]
     private static partial Regex CreateTagRegex();
 

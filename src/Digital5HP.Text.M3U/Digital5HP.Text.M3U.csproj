@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Shay Nissel</Authors>
-    <VersionPrefix>1.1.1</VersionPrefix>
+    <VersionPrefix>1.2.0</VersionPrefix>
     <PackageTags>Serialization;Text;M3U;Parser</PackageTags>
   </PropertyGroup>
 

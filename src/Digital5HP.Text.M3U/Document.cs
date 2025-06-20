@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Document
 {
+    public string Tvg { get; set; }
+
     public string PlaylistType { get; set; }
 
     public int? TargetDuration { get; set; }
